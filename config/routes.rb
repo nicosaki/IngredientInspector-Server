@@ -1,12 +1,11 @@
 Rails.application.routes.draw do
-  get 'user/login' => 'user#login' #return user id if successful creds
-  post 'user/create' => 'user#create', as: :user_create  #return user id to be local stored
+  get 'user/login/:uid' => 'user#login' #return user id if successful creds
+  post 'user/create' => 'user#create', as: :user_create  #return user id to be local stored. Other user info postbody?
   get 'user/:id' => 'user#index', as: :user_index   #on log-in, store uid locally
-  post 'user/:id/approved' => 'user#approved', as: :user_approved
-  post 'user/:id/avoid' => 'user#avoid', as: :user_avoid
-  get 'user/:id/manufacturers' => 'user#manufacturers' #return list of manufactrers contacted by user
-  post 'user/:id/manufacturers/' => 'user#contact_manufacturer' #unknown if will use. May do direct API call in app, and use this to track in database
-
+  post 'user/:id/approved/:upc' => 'user#approved', as: :user_approved#every time post, store return locally for immediate use
+  post 'user/:id/avoid/:avoid' => 'user#avoid', as: :user_avoid #every time post, store return locally for immediate use
+  get 'user/:id/products' => 'user#products' #return list of manufactrers contacted by user INCOMPLETE
+  post 'user/:id/:upc/' => 'user#contact_manufacturer' #unknown if will use. May do direct API call in app, and use this to track in database
 
   get '/ingredients/:upc/:id' => 'ingredients#lookup'
 
