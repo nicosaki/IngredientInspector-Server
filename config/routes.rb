@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  get 'user/login' => 'user#login' #return user id if successful creds
+  post 'user/create' => 'user#create', as: :user_create  #return user id to be local stored
+  get 'user/:id' => 'user#index', as: :user_index   #on log-in, store uid locally
+  post 'user/:id/approved' => 'user#approved', as: :user_approved
+  post 'user/:id/avoid' => 'user#avoid', as: :user_avoid
+  get 'user/:id/manufacturers' => 'user#manufacturers' #return list of manufactrers contacted by user
+  post 'user/:id/manufacturers/' => 'user#contact_manufacturer' #unknown if will use. May do direct API call in app, and use this to track in database
+
+
+  get '/ingredients/:upc' => 'ingredients#lookup'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
