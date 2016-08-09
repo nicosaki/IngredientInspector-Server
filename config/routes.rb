@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   post 'user/:id/avoid/:avoid' => 'user#avoid', as: :user_avoid #every time post, store return locally for immediate use
   get 'user/:id/products' => 'user#products' #return list of manufactrers contacted by user INCOMPLETE
   post 'user/:id/:upc/' => 'user#contact_manufacturer' #unknown if will use. May do direct API call in app, and use this to track in database
+  get 'test' => 'ingredients#test'
 
   get '/ingredients/:upc/:id' => 'ingredients#lookup'
 

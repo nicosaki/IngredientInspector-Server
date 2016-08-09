@@ -25,4 +25,18 @@ class IngredientsController < ApplicationController
 
   end
 
+  def test
+    # array = ["carrageenan", "Gluconic acid", "starch", "caramel color"]
+    # hold = []
+    # array.each do |ingredient|
+    #   this = Ingredient.find_by(name: ingredient)
+    #   puts this
+    #   if this
+    #     hold << ingredient
+    #   end
+    # end
+    details = Ingredient.all
+    render json: details.as_json
+  end
+
 end
