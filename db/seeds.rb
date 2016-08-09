@@ -20,7 +20,7 @@ a.each do |hash|
   print response
 
   unless response.code >= 400
-   b.update({function: response["function"].downcase, foods: response["foods"].downcase, warnings: response["notice"].downcase, details: response["info"].downcase, status: response["status"].downcase, source: "e-additives"})
+   b.update({function: response["function"], foods: response["foods"], warnings: response["notice"], details: response["info"], status: response["status"], source: "e-additives"})
   end
   if b.save
     puts "YAY"
