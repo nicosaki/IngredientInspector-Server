@@ -8,20 +8,31 @@ class IngredientsController < ApplicationController
     response = HTTParty.get("http://world.openfoodfacts.org/api/v9/product/#{upc}.json",
       headers: { "Accept" => "application/json",
         "User-Agent" => "IngredientInspector/1.0"})
-    ingredients = response.parsed_response["product"]["ingredients_text"]
-    ingredients = clean_input(ingredients)
+    puts response
+    if (response.parsed_response["status"]==0)
+      render json: response.parsed_response["status_verbose"].as_json
+    elsif (response.parsed_response["product"]["ingredients_text"] == "")
+      #code to search secondary food database!!!
+      product = response.parsed_response["product"]["product_name"]
+      brand = response.parsed_response["product"]["brands"]
+      data = { product: product, brand: brand, message: "No ingredients added"}
+      render json: data.as_json
+    else
+      all_ingredients = response.parsed_response["product"]["ingredients_text"]
+      ingredients = clean_input(all_ingredients)
+      #code to run all of the queries, plus manufacturer API
+      data = {
+            "all" => all_ingredients,
+            "ingredients" => "array of hashes?",
+            "manufacturer_contact" => "email_goes_here",
+            "a" => ingredients
 
-    #code to run all of the queries, plus manufacturer API
-    data = {
-          "ingredients" => "array of hashes?",
-          "manufacturer_contact" => "email_goes_here",
-          "a" => ingredients
-        }
+          }
 
-    render json: data.as_json, :status => :ok
+      render json: data.as_json, :status => :ok
 
-    rescue HTTParty::ResponseError #FIX ERROR HANDLING
-        render json: [], :status => :bad_request
+    end
+        # render json: [], :status => :bad_request
 
   end
 
@@ -35,8 +46,10 @@ class IngredientsController < ApplicationController
     #     hold << ingredient
     #   end
     # end
-    details = Ingredient.all
-    render json: details.as_json
+    # details = Ingredient.where(status: nil, warnings: nil)
+    details = fetch_contact("http://misttwst.com/")
+    # puts details.length
+    render json: details
   end
 
 end
