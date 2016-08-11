@@ -25,6 +25,7 @@ class IngredientsController < ApplicationController
         brand = response.parsed_response["product"]["brands"]
         contact = fetch_contact(fetch_manufacturer(brand))
         domain = fetch_manufacturer(brand)
+        packaging_info = response.parsed_response["product"]["packaging_tags"]
       # async script to get manufacturer domain => contact info
       #code to run all of the db queries locally
       data = {
@@ -32,7 +33,8 @@ class IngredientsController < ApplicationController
             "manufacturer_contact" => contact,
             "product" => product,
             "brand" => brand,
-            "domain" => domain
+            "domain" => domain,
+            "packaging" => packaging_info
           }
       end
       Rails.cache.fetch("#{upc}/upc", expires_in: 200.hours) do
@@ -47,7 +49,7 @@ class IngredientsController < ApplicationController
 
   def test
     # array = ["corn syrup", "modified food starch", "citric acid", "malic acid", "fumaric acid", "dextrin", "carnauba wax", "triglycerides", "tartrazine"]
-    hold = []
+    hold = search_parent("Lay's")
     # array.each do |ingredient|
     #   this = Ingredient.find_by(name: ingredient)
     #   puts this
@@ -60,10 +62,10 @@ class IngredientsController < ApplicationController
     # details = Ingredient.where(status: nil, warnings: nil)
     # details = fetch_contact("http://misttwst.com/")
     # puts details.length
-    ingredients = Ingredient.all
-    ingredients.each do |ingredient|
-      hold << [ingredient.name, ingredient.status, ingredient.warnings]
-    end
+    # ingredients = Ingredient.all
+    # ingredients.each do |ingredient|
+    #   hold << [ingredient.name, ingredient.status, ingredient.warnings]
+    # end
     render json: hold.as_json
   end
 
