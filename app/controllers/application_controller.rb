@@ -43,14 +43,33 @@ class ApplicationController < ActionController::Base
         headers: { "Accept" => "application/json",
           "User-Agent" => "IngredientInspector/1.0",
           "X-FullContact-APIKey" => ENV['FULL_CONTACT_KEY']
-          })["socialProfiles"]
+          })
       puts "USED A FULLCONTACT QUERY"
-      Rails.cache.fetch("#{domain}/domain", expires_in: 200.hours) do
-        contact
+      unless contact.code == 202 || contact.code >= 300
+        Rails.cache.fetch("#{domain}/domain", expires_in: 200.hours) do
+          contact["socialProfiles"]
+        end
       end
-      puts contact
     end
-    return contact
+    contact ? (return contact["socialProfiles"]) : (return "Queued")
   end
+
+  #HAS POTENTIAL FOR BRAND SEARCH FUNCTIONALITY, NOT RELIABLY FINDING DESIRED RESULTS. Stretch
+  # def search_parent(brand)
+  #   parent = Rails.cache.fetch("#{brand}/parent")
+  #   if parent.nil?
+  #     response = HTTParty.get("https://api.cognitive.microsoft.com/bing/v5.0/search?q=parent company of #{brand} brand&count=3&offset=0&mkt=en-us&safesearch=Strict",
+  #       headers: { "Accept" => "application/json",
+  #         "User-Agent" => "IngredientInspector/1.0",
+  #         "Ocp-Apim-Subscription-Key" => ENV['BING_SEARCH_KEY_1'],
+  #         "Authorization" => ENV['BING_SEARCH_KEY_2']})
+  #     parent = response["webPages"]["value"][0] #fix with testing!
+  #     puts "USED A BING QUERY"
+  #     Rails.cache.fetch("#{brand}/parent", expires_in: 200.hours) do
+  #       parent
+  #     end
+  #   end
+  #   return parent
+  # end
 
 end
