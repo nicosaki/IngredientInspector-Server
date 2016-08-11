@@ -21,6 +21,14 @@ class UsersController < ApplicationController
     render json: id.as_json
   end
 
+  def update
+    id = params[:id]
+    new_concerns = body.conerns  # NONFINAL - gather new concerns
+    @user = User.find_by(id: id)
+    @user ? (@user.update(concerns: new_concerns)) : (render json: {error: "no user found"}.as_json)
+    render json: @user.id.as_json
+  end
+
   def index
     id = params[:id]
     @user = User.find_by(id: id)
