@@ -65,10 +65,11 @@ class UsersController < ApplicationController
   def contact_manufacturer #figure out how to receive selected ingredients. Body?
     upc = params[:upc]
     id = params[:id]
-    response = HTTParty.get("http://world.openfoodfacts.org/api/v9/product/#{upc}.json",
-      headers: { "Accept" => "application/json",
-        "User-Agent" => "IngredientInspector/1.0"})
-    brand = response.parsed_response["product"]["brand"]
+    data = Rails.cache.fetch("#{upc}/upc")
+    # response = HTTParty.get("http://world.openfoodfacts.org/api/v9/product/#{upc}.json",
+    #   headers: { "Accept" => "application/json",
+    #     "User-Agent" => "IngredientInspector/1.0"})
+    brand = data.manufacturer_contact
     new_brand = Product.new(id: id, upc: upc, brand: brand)
   end
 
