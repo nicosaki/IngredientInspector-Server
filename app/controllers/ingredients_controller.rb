@@ -28,6 +28,8 @@ class IngredientsController < ApplicationController
         packaging_info = response.parsed_response["product"]["packaging_tags"]
       # async script to get manufacturer domain => contact info
       #code to run all of the db queries locally
+
+      #NEXT: Change ingredient call to only return ingredients, SAVE info to make following calls upon user request! Use "log" style saves
       data = {
             "ingredients" => ingredients,
             "manufacturer_contact" => contact,

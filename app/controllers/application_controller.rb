@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
+  protect_from_forgery unless: -> { request.format.json? }
   helper_method :clean_input
 
   def clean_input(string)
@@ -52,6 +52,10 @@ class ApplicationController < ActionController::Base
       end
     end
     contact ? (return contact["socialProfiles"]) : (return "Queued")
+  end
+
+  def contact_manufacturer_email(upc)
+
   end
 
   #HAS POTENTIAL FOR BRAND SEARCH FUNCTIONALITY, NOT RELIABLY FINDING DESIRED RESULTS. Stretch
