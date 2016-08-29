@@ -19,7 +19,7 @@ a.each do |hash|
       "User-Agent" => "IngredientInspector/1.0"})
   print response
 
-  unless (response.code >= 400 || response["status"].downcase == "safe")
+  unless (response.code >= 400 || response["status"] == "safe")
    b.update({function: response["function"], foods: response["foods"], warnings: response["notice"], details: response["info"], status: response["status"], source: "e-additives"})
   end
   if b.save
