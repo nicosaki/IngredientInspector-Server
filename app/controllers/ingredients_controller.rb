@@ -13,9 +13,9 @@ class IngredientsController < ApplicationController
           "User-Agent" => "IngredientInspector/1.0"})
       puts response
 
-      if (response.parsed_response["status"]==0)
+      if response.parsed_response["status"]==0
         data = response.parsed_response["status_verbose"]
-      elsif (response.parsed_response["product"]["ingredients_text"] == "")
+      elsif response.parsed_response["product"]["ingredients_text"] == ""
         #code to search secondary food database!!!
         data = { product: product, brand: brand, message: "No ingredients added"}
       else
