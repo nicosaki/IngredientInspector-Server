@@ -54,7 +54,8 @@ class ApplicationController < ActionController::Base
     contact ? (return contact["socialProfiles"]) : (return "Queued")
   end
 
-  def contact_manufacturer_email(upc)
+  def contact_manufacturer_email(contact_hash)
+    contact = Rails.cache.fetch("#{domain}/domain")
     return true
   end
 

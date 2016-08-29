@@ -30,13 +30,26 @@ class IngredientsController < ApplicationController
       #code to run all of the db queries locally
 
       #NEXT: Change ingredient call to only return ingredients, SAVE info to make following calls upon user request! Use "log" style saves
+      flagged_ingredients = []
+      ingredients.each do |ingredient|
+        this = Ingredient.find_by(name: ingredient)
+        if this
+          puts this
+          flagged_ingredients << this
+        end
+      end
+      if flagged_ingredients.empty?
+        flagged_ingredients = "No flagged ingredients"
+      end
       data = {
-            "ingredients" => ingredients,
+            "ingredients" => flagged_ingredients,
             "manufacturer_contact" => contact,
             "product" => product,
             "brand" => brand,
             "domain" => domain,
-            "packaging" => packaging_info
+            "packaging" => packaging_info,
+            "message" => "found",
+            "status" => "ok"
           }
       end
       Rails.cache.fetch("#{upc}/upc", expires_in: 200.hours) do

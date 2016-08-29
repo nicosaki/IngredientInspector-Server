@@ -101,11 +101,13 @@ class UsersController < ApplicationController
       #     "User-Agent" => "IngredientInspector/1.0"})
       brand = data.manufacturer_contact
       product = data.product
-      contact_hash = data["contact"]
-      if contact_hash["email"]
-        email_sent = contact_manufacturer_email(contact_hash["email"])
-      elsif contact_hash["twitter"]
-        twitter_tweetered = contact_manufacturer_twitter(contact_hash["twitter"])
+      contact_array = data["contact"]
+      contact_array.each do |hash|
+        if hash["typeId"] == "twitter"
+          twitter_tweetered = contact_manufacturer_twitter(hash["username"])
+        elsif hash["typeId"] == "email"
+          email_sent = contact_manufacturer_email(hash["address"])
+        end
       end
       new_brand = Contacted.new(id: id, upc: upc, brand: brand, product: product)
       render json: [], :status => :ok
