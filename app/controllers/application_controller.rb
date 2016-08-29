@@ -9,8 +9,6 @@ class ApplicationController < ActionController::Base
   def clean_input(string)
     string = string.gsub(/[()\[\]]/, ",").downcase
     ingredients = string.split(",")
-    puts "HERE"
-    puts ingredients
     ingredients.each do |ingredient|
       ingredient.slice!(0) until (ingredient[0] != " ")
       ingredient.slice!(-1) until (ingredient[-1] != " ")
