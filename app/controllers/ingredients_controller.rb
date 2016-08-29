@@ -45,30 +45,10 @@ class IngredientsController < ApplicationController
     end
 
       render json: data.as_json, :status => :ok
-
-      # render json: [], :status => :bad_request
   end
 
   def test
-    # array = ["corn syrup", "modified food starch", "citric acid", "malic acid", "fumaric acid", "dextrin", "carnauba wax", "triglycerides", "tartrazine"]
-    hold = search_parent("Lay's")
-    # array.each do |ingredient|
-    #   this = Ingredient.find_by(name: ingredient)
-    #   puts this
-    #   if this
-    #     hold << ingredient
-    #     puts this.status
-    #     puts this.warnings
-    #   end
-    # end
-    # details = Ingredient.where(status: nil, warnings: nil)
-    # details = fetch_contact("http://misttwst.com/")
-    # puts details.length
-    # ingredients = Ingredient.all
-    # ingredients.each do |ingredient|
-    #   hold << [ingredient.name, ingredient.status, ingredient.warnings]
-    # end
-    render json: hold.as_json
+    return true
   end
 
 end

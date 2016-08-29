@@ -1,3 +1,5 @@
+require 'httparty'
+
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -45,7 +47,7 @@ class ApplicationController < ActionController::Base
           "X-FullContact-APIKey" => ENV['FULL_CONTACT_KEY']
           })
       puts "USED A FULLCONTACT QUERY"
-      unless contact.code == 202 || contact.code >= 300
+      unless (contact.code == 202 || contact.code >= 300)
         Rails.cache.fetch("#{domain}/domain", expires_in: 200.hours) do
           contact["socialProfiles"]
         end

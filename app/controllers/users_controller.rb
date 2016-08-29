@@ -8,9 +8,6 @@ class UsersController < ApplicationController
     profile = body["profile"]
     name = profile["name"]
     uid = profile["userId"]
-    # binding.pry
-    # name = request.body.name
-    # uid = request.body.userId
     user = User.find_by(uid: uid)
     if user.nil?
       @user = User.create(uid: uid, name: name, concerns: '')
