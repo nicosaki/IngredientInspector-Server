@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
   end
 
   def contact_manufacturer_email(upc)
-
+    return true
   end
 
   #HAS POTENTIAL FOR BRAND SEARCH FUNCTIONALITY, NOT RELIABLY FINDING DESIRED RESULTS. Stretch

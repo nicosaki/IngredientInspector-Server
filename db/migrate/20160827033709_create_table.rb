@@ -1,6 +1,6 @@
 class CreateTable < ActiveRecord::Migration
   def change
-    create_table :tables do |t|
+    create_table :contacteds do |t|
       t.string :upc
       t.string :uid
       t.boolean :contacted

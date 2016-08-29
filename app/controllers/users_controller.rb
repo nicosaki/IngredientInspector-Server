@@ -87,11 +87,11 @@ class UsersController < ApplicationController
     render json: [], :status => :failed_to_save
   end
 
-  def products
-    id = params[:id]
-    @brands = Contacted.find_by(id: id)
-    render json: @brands.as_json
-  end
+  # def products
+  #   id = params[:id]
+  #   @brands = Contacted.find_by(id: id)
+  #   render json: @brands.as_json
+  # end
 
   def contact_manufacturer
     # body = JSON.parse request.body.read #POTENTIAL PROVIDE EMAIL/TWITTER PREFERENCE

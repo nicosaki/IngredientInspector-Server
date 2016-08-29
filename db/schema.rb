@@ -34,6 +34,16 @@ ActiveRecord::Schema.define(version: 20160827033709) do
     t.datetime "updated_at",   null: false
   end
 
+  create_table "contacteds", force: :cascade do |t|
+    t.string   "upc"
+    t.string   "uid"
+    t.boolean  "contacted"
+    t.string   "brand"
+    t.string   "product"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "ingredients", force: :cascade do |t|
     t.string   "eid"
     t.string   "name",       null: false
@@ -44,16 +54,6 @@ ActiveRecord::Schema.define(version: 20160827033709) do
     t.string   "details"
     t.string   "source"
     t.string   "other"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tables", force: :cascade do |t|
-    t.string   "upc"
-    t.string   "uid"
-    t.boolean  "contacted"
-    t.string   "brand"
-    t.string   "product"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
