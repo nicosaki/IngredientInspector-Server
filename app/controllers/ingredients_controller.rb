@@ -14,7 +14,7 @@ class IngredientsController < ApplicationController
       puts response
 
       if response.parsed_response["status"]==0
-        data = response.parsed_response["status_verbose"]
+        data = { message: "No ingredients added", status: 0}
       elsif response.parsed_response["product"]["ingredients_text"] == ""
         #code to search secondary food database!!!
         data = { product: product, brand: brand, message: "No ingredients added"}
@@ -23,9 +23,14 @@ class IngredientsController < ApplicationController
         ingredients = clean_input(all_ingredients)
         product = response.parsed_response["product"]["product_name"]
         brand = response.parsed_response["product"]["brands"]
-        contact = fetch_contact(fetch_manufacturer(brand))
-        domain = fetch_manufacturer(brand)
-        packaging_info = response.parsed_response["product"]["packaging_tags"]
+        if (brand != '' && brand != nil)
+          puts "BRAND: " + brand
+          contact = fetch_contact(fetch_manufacturer(brand))
+        else
+          puts "PRODUCT: " + product
+          contact = fetch_contact(fetch_manufacturer(product))
+        end
+        packaging_info = response.parsed_response["product"]["packaging_tags"] || ''
       # async script to get manufacturer domain => contact info
       #code to run all of the db queries locally
 
@@ -36,6 +41,13 @@ class IngredientsController < ApplicationController
         if this
           puts this
           flagged_ingredients << this
+        end
+      end
+      @user = User.find(id)
+      concerns = @user.concerns.gsub(/, /, ',')
+      (concerns.split(',')).each do |concern|
+        if ingredients.include? concern
+          flagged_ingredients << concern
         end
       end
       if flagged_ingredients.empty?
@@ -56,7 +68,7 @@ class IngredientsController < ApplicationController
         data
       end
     end
-
+      puts "RETURN_DATA: " + data
       render json: data.as_json, :status => :ok
   end
 

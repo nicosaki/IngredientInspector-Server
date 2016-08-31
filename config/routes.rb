@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   post 'user/:id/:upc/' => 'users#contact_manufacturer' #unknown if will use. May do direct API call in app, and use this to track in database
   get 'test' => 'ingredients#test'
 
-  get '/ingredients/:upc' => 'ingredients#lookup'
+  get '/ingredients/:upc/:id' => 'ingredients#lookup'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

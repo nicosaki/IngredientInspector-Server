@@ -49,10 +49,16 @@ class UsersController < ApplicationController
 
   def index
     id = params[:id]
-    @user = User.find_by(id: id)
-    if @user
-      data = {user: @user}
-      render json: data.as_json
+    user = User.find_by(id: id)
+    if user
+      @concerns = user.concerns
+      @avoids = Avoid.find_by(uid: user.id)
+      @approved = Approved.find_by(uid: user.id)
+      @contacted = Contacted.where(uid: user.id, contacted: true)
+      contacted = @contacted.map{|record| {product: record.product, brand: record.brand}}
+      id = {id: user.id, concerns: @concerns, avoid: @avoids, approved: @approved, contacted: contacted}
+      # avoid: user.avoid, approved: user.approved, contacted: user.contacted, concerns: concerns}
+      render json: id.as_json, :status => :ok
     else
       render json: [], :status => :no_user
     end

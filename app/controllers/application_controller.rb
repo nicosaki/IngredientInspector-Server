@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
           "User-Agent" => "IngredientInspector/1.0",
           "Ocp-Apim-Subscription-Key" => ENV['BING_SEARCH_KEY_1'],
           "Authorization" => ENV['BING_SEARCH_KEY_2']})
+      puts "URL_FETCH: " + response.to_s
       url = response["webPages"]["value"][0]["displayUrl"]
       puts "USED A BING QUERY"
       Rails.cache.fetch("#{brand}/brand", expires_in: 200.hours) do
