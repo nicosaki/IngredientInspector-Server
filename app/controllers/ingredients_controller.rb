@@ -25,12 +25,15 @@ class IngredientsController < ApplicationController
         brand = response.parsed_response["product"]["brands"]
         if (brand != '' && brand != nil)
           puts "BRAND: " + brand
-          contact = fetch_contact(fetch_manufacturer(brand))
+          domain = fetch_manufacturer(brand)
+          contact = fetch_contact(domain)
         else
           puts "PRODUCT: " + product
-          contact = fetch_contact(fetch_manufacturer(product))
+          domain = fetch_manufacturer(product)
+          contact = fetch_contact(domain)
         end
         packaging_info = response.parsed_response["product"]["packaging_tags"] || ''
+
       # async script to get manufacturer domain => contact info
       #code to run all of the db queries locally
 
