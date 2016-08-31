@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     user = User.find_by(uid: uid)
     if user.nil?
       @user = User.create(uid: uid, name: name, concerns: '')
-      id = { id: @user.id, concerns: ''}
+      id = { id: @user.id, concerns: '', avoid: [], approved: [], contacted: []}
       render json: id.as_json
     else
       puts user
@@ -99,14 +99,16 @@ class UsersController < ApplicationController
       # response = HTTParty.get("http://world.openfoodfacts.org/api/v9/product/#{upc}.json",
       #   headers: { "Accept" => "application/json",
       #     "User-Agent" => "IngredientInspector/1.0"})
-      brand = data.manufacturer_contact
-      product = data.product
-      contact_array = data["contact"]
+      hold = data["ingredients"].map{|hash| hash["name"]}
+      brand = data["manufacturer_contact"]
+      product = data["product"]
+      contact_array = data["manufacturer_contact"]
       contact_array.each do |hash|
         if hash["typeId"] == "twitter"
-          twitter_tweetered = contact_manufacturer_twitter(hash["username"])
+          tweet = "@#{hash["username"]} #{product} contains #{hold.join(', ')} :("
+          $twitter.update(tweet)
         elsif hash["typeId"] == "email"
-          email_sent = contact_manufacturer_email(hash["address"])
+          UserMailer.product_email(hash["address"], upc).deliver_now
         end
       end
       new_brand = Contacted.new(id: id, upc: upc, brand: brand, product: product)

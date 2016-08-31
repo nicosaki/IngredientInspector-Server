@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hello from IngredientInspector!</h1>
+    <p>
+      This is an automated message sent at a customer's request regarding their interest in your product, UPC code: <%= upc %>.
+    </p>
+    <p>
+      Although they are interested in this product, they are disappointed that it contains the following ingredients of potential health concern:
+      <% @ingredients.each do |ingredient| %>
+        <%=ingredient["name"]%> : <%= ingredient["warnings"] || "(of little concern)" %> |
+      <%end%>
+    </p>
+    <p>Thank you for your time and concern. Have a great day!</p>
+  </body>
+</html>
