@@ -46,6 +46,7 @@ class ApplicationController < ActionController::Base
           "X-FullContact-APIKey" => ENV['FULL_CONTACT_KEY']
           })
       puts "USED A FULLCONTACT QUERY"
+      puts "CONTACT: " + contact.to_s
       unless (contact.code == 202 || contact.code >= 300)
         Rails.cache.fetch("#{domain}/domain", expires_in: 200.hours) do
           contact["socialProfiles"]

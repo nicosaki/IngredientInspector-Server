@@ -106,16 +106,21 @@ class UsersController < ApplicationController
       #   headers: { "Accept" => "application/json",
       #     "User-Agent" => "IngredientInspector/1.0"})
       hold = data["ingredients"].map{|hash| hash["name"]}
-      brand = data["manufacturer_contact"]
-      product = data["product"]
+      brand = data["brand"] || ''
+      product = data["product"] || ''
       contact_array = data["manufacturer_contact"]
-      contact_array.each do |hash|
-        if hash["typeId"] == "twitter"
-          tweet = "@#{hash["username"]} #{product} contains #{hold.join(', ')} :("
-          $twitter.update(tweet)
-        elsif hash["typeId"] == "email"
-          UserMailer.product_email(hash["address"], upc).deliver_now
+      if contact_array
+        contact_array.each do |hash|
+          if hash["typeId"] == "twitter"
+            tweet = "@#{hash["username"]} #{product} contains #{hold.join(', ')} :("
+            $twitter.update(tweet)
+          elsif hash["typeId"] == "email"
+            UserMailer.product_email(hash["address"], upc).deliver_now
+          end
         end
+      else
+        tweet = "#{brand} #{product} contains #{hold.join(', ')} :("
+        $twitter.update(tweet)
       end
       new_brand = Contacted.new(id: id, upc: upc, brand: brand, product: product)
       render json: [], :status => :ok
