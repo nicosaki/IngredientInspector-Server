@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   def fetch_contact(domain)
     contact = Rails.cache.fetch("#{domain}/domain")
     # puts contact
-    if contact.nil?
+    if contact.nil? || contact.empty?
       contact = HTTParty.get("https://api.fullcontact.com/v2/company/lookup.json?domain=#{domain}",
         headers: { "Accept" => "application/json",
           "User-Agent" => "IngredientInspector/1.0",
@@ -53,6 +53,7 @@ class ApplicationController < ActionController::Base
         end
       end
     end
+    puts "CONTACT: " + contact.to_s
     contact ? (return contact["socialProfiles"]) : (return "Queued")
   end
 

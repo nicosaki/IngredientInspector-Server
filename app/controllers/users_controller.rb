@@ -110,6 +110,9 @@ class UsersController < ApplicationController
       product = data["product"] || ''
       contact_array = data["manufacturer_contact"]
       if contact_array
+        if contact_array == "Queued"
+          contact_array = fetch_contact(data["domain"])
+        end
         contact_array.each do |hash|
           if hash["typeId"] == "twitter"
             tweet = "@#{hash["username"]} #{product} contains #{hold.join(', ')} :("
