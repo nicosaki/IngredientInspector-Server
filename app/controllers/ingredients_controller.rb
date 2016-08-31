@@ -71,7 +71,6 @@ class IngredientsController < ApplicationController
         data
       end
     end
-      puts "RETURN_DATA: " + data
       render json: data.as_json, :status => :ok
   end
 
