@@ -1,5 +1,3 @@
-* README*
-
 **IngredientInspector Dataserver**
 
 IngredientInspector mobile app is an app that allows users to scan barcodes using their phone's camera, and then shows users the food additive ingredients of that product. It uses the data compiled by (e-additives)[http://e-additives.vexelon.net/#!/home] primarily from uk-based food authorities. When users view the potentially concerning ingredients, they are provided the option to add the product to the user's Approved or Avoid lists (accesible from the user dashboard), or to contact the manufacturer.
